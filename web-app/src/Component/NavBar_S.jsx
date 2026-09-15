@@ -24,7 +24,6 @@ export default function Nav_Bar_LS() {
                     </Navbar.Brand>
                 </Navbar>
             </Container>
-            <div>hi</div>
         </>
     )
 }
