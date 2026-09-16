@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+
+import Nav_bar_Dashborad from './Navbar';
 
 export default function DashBorad() {
-    
+
     return (
         <>
-        
+            <Nav_bar_Dashborad />
         </>
     )
 }
