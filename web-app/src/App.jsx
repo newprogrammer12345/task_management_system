@@ -8,7 +8,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Nav_Bar_LS />} />
-        <Route path="/dashboard/:fullname" element={<DashBorad />} />
+        <Route path="/dashboard/:fullname/*" element={<DashBorad />} />
       </Routes>
 
     </>

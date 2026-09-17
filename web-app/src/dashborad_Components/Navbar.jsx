@@ -16,10 +16,18 @@ export default function Nav_bar_Dashborad() {
     )
 
     function handle_changeurl(e) {
-        const target = Number(e.target.dataset.index)
-    
-        changed_bg_col(result)
-
+        const target = Number(e.target.dataset.index);
+        console.log(target, typeof target)
+        const result = bg_col.map((item, index) => {
+            if (index == target) {
+                return { isValid: true }
+            }
+            else {
+                return { isValid: false }
+            }
+        });
+        console.log(result)
+        changed_bg_col(result);
     }
     return (
         <>
@@ -30,10 +38,10 @@ export default function Nav_bar_Dashborad() {
 
                         <Nav>
                             <Link className={`nav-link ${bg_col[0].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="" onClick={handle_changeurl} >All task</Link>
-                            <Link className={`nav-link ${bg_col[1].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="" onClick={handle_changeurl}>Favorite</Link>
-                            <Link className={`nav-link ${bg_col[2].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="" onClick={handle_changeurl}>Work</Link>
-                            <Link className={`nav-link ${bg_col[3].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="" onClick={handle_changeurl}>Personal</Link>
-                            <Link className={`nav-link ${bg_col[4].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="" onClick={handle_changeurl}>Learning</Link>
+                            <Link className={`nav-link ${bg_col[1].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="Favorite" onClick={handle_changeurl}>Favorite</Link>
+                            <Link className={`nav-link ${bg_col[2].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="Work" onClick={handle_changeurl}>Work</Link>
+                            <Link className={`nav-link ${bg_col[3].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="Personal" onClick={handle_changeurl}>Personal</Link>
+                            <Link className={`nav-link ${bg_col[4].isValid ? 'bg-primary text-light rounded-2 fw-bolder' : ''}`} to="Learning" onClick={handle_changeurl}>Learning</Link>
                         </Nav>
                     </div>
                     <div className=' d-flex gap-2'>

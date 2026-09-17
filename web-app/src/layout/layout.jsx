@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Nav_Bar_LS from "../Component/NavBar_S"
+import Nav_bar_Dashborad from "../dashborad_Components/Navbar";
 
 export default function Layout() {
   return (
     <>
-      <Nav_Bar_LS />
+      <Nav_bar_Dashborad />
       <main>
         <Outlet />
       </main>
