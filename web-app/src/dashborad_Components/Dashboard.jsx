@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import Nav_bar_Dashborad from './Navbar';
 import All_Task from "../pages_dashborad/All_task";
 import Favorite_page from "../pages_dashborad/Favourite";
 import Learning_Page from "../pages_dashborad/learning";
@@ -10,7 +9,6 @@ export default function DashBorad() {
 
     return (
         <>
-            {/* <Nav_bar_Dashborad /> */}
             <Routes>
                 <Route path="/" element ={<Layout/>}>
                     <Route index element = {<All_Task/>}/>

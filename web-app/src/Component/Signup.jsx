@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { RxEyeOpen } from "react-icons/rx";
 import { LuEyeClosed } from "react-icons/lu";
 import { useNavigate } from 'react-router-dom';
+import { useUserStorage } from '../userdata_sign';
 
 const SignupSchema = z.object({
     fullname: z.string().min(3, "It must be greater then 3").max(50, "It is must be less then 50 "),
@@ -28,7 +29,9 @@ export default function Signup() {
     let [password_view, chamge_password_type] = useState(false)
     let [signup, setsignup] = useState(false);
     let navigate = useNavigate();
-
+    const storage_User_data = useUserStorage( (state)=> {
+        return state.setUserdata;
+    });
     const formhook = useForm({
         resolver: zodResolver(SignupSchema),
         mode: "onChange",
@@ -52,28 +55,34 @@ export default function Signup() {
 
     function onSubmit(data) {
         if (data) {
-
             const reader = new FileReader();
             const profile_pic = data.Profile_Img[0];
-
             reader.onloadend = function () {
+
                 const sent_data = {
+
                     fullname: data.fullname,
+
                     email: data.email,
-                    profile_pic: data.Profile_Img[0],
+
+                    profile_pic: reader.result,
+
                     password: data.password,
+
                     contact_number: data.contact_number
+
                 }
+
+                storage_User_data(sent_data)
                 setsignup(false)
-                navigate(`/dashboard/${encodeURIComponent(sent_data.fullname)}`,{
-                state:
-                {user:sent_data}
-                })
+                navigate(`/dashboard/${encodeURIComponent(sent_data.fullname.trim())}`)
+
+            }
+            if (profile_pic) {
+                reader.readAsDataURL(profile_pic)
+
             }
 
-            if(profile_pic){
-                reader.readAsDataURL(profile_pic)
-            }
         }
     }
 

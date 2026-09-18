@@ -52,7 +52,7 @@ export default function Login() {
                 password: data.password,
             }
             setlogin(false);
-            navigate(`/dashboard/${encodeURIComponent(sent_data.fullname)}`);
+            navigate(`/dashboard/${encodeURIComponent(sent_data.fullname.trim())}`);
         }
     }
     return (
