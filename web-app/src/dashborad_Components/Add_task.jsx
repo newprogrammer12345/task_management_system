@@ -8,11 +8,46 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 
+
+let sechma = z.object({
+    Title: z.string().min(3, "Make sure title characters are greater then 3").max(10, "The title can't be greater then 10"),
+    Date: z.string().min(1, "Date is required"),
+    Time: z.string().min(1, "Time is required")
+
+})
 export default function Add_task() {
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    function handleClose() {
+        setShow(false);
+        reset()
+    }
+
+    function handleShow() {
+        setShow(true);
+    }
+
+    let formhook = useForm({
+        resolver: zodResolver(sechma),
+        mode: "onChange",
+    })
+
+    const register = formhook.register;
+    const errors = formhook.formState.errors;
+    const reset = formhook.reset;
+    const handleSubmit = formhook.handleSubmit;
+
+    function handle_User_data_task(data_of_task) {
+        if (data_of_task) {
+            let sent_data = {
+                Title: data_of_task.Title,
+                Date : data_of_task.Date,
+                Time : data_of_task.Time
+            }
+            console.log(sent_data)
+            handleClose()
+        }
+    }
 
     return (
         <>
@@ -21,8 +56,8 @@ export default function Add_task() {
                 <Modal.Header closeButton>
                     <Modal.Title>Add task Form</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Form className="p-2">
+                <Form className="p-2" onSubmit={handleSubmit(handle_User_data_task)}>
+                    <Modal.Body>
                         {/* Row 1: Title */}
                         <Row className="mb-3">
                             <Col md={12}>
@@ -31,7 +66,12 @@ export default function Add_task() {
                                     <Form.Control
                                         type="text"
                                         placeholder="Enter task title"
+                                        isInvalid={Boolean(errors.Title)}
+                                        {...register("Title")}
                                     />
+                                    <Form.Text className="text-danger">
+                                        {errors.Title?.message}
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -43,7 +83,12 @@ export default function Add_task() {
                                     <Form.Label className="fw-semibold">Date</Form.Label>
                                     <Form.Control
                                         type="date"
+                                        isInvalid={Boolean(errors.Date)}
+                                        {...register("Date")}
                                     />
+                                    <Form.Text className="text-danger">
+                                        {errors.Date?.message}
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
@@ -51,7 +96,13 @@ export default function Add_task() {
                                     <Form.Label className="fw-semibold">Due Time</Form.Label>
                                     <Form.Control
                                         type="time"
+                                        isInvalid={Boolean(errors.Time)}
+                                        {...register("Time")}
                                     />
+                                    <Form.Text className="text-danger">
+                                        {errors.Time?.message}
+                                    </Form.Text>
+                                
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -112,18 +163,17 @@ export default function Add_task() {
                                 </Form.Group>
                             </Col>
                         </Row>
-                    </Form>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </Modal >
         </>
     )
 }

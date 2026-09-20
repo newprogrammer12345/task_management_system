@@ -2,8 +2,14 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import Nav from "react-bootstrap/Nav"
+import Add_task from './Add_task';
+import { useUserStorage } from '../userdata_sign';
+
 export default function Nav_bar_Dashborad() {
 
+    let Stoarge_User_data = useUserStorage((state)=>{
+        return state.userdata;
+    })
     return (
         <>
             <Navbar bg="light" data-bs-theme="light" className=' shadow-sm'>
@@ -20,15 +26,15 @@ export default function Nav_bar_Dashborad() {
                         </Nav>
                     </div>
                     <div className=' d-flex gap-2'>
-                        {/* <div
+                        <div
                             className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center border bg-light"
                             style={{ width: '60px', height: '60px' }}
                         >
                             <img
-                                src={user_info.profile_pic}
+                                src={Stoarge_User_data?.profile_pic}
                                 alt="Profile"
                                 className="w-100 h-100 object-fit-cover" />
-                        </div> */}
+                        </div>
                         <Add_task />
                     </div>
                 </div>
