@@ -14,3 +14,15 @@ export const useUserStorage =  create (function (set){
         setUserdata:(data)=>{ set ({userdata:data})}
     }
 })
+
+export const useTaskdate = create ((set)=>{
+    return{
+        taskdata:[],
+        update_taskdata: (data) => { set((state)=>{
+            return{
+                taskdata : [...state.taskdata,data]
+            }
+        })
+        }
+    }
+})

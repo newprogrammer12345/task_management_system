@@ -7,16 +7,35 @@ import Col from 'react-bootstrap/Col';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
+import { useTaskdate } from '../userdata_sign';
+
+const Category_Dropdwon = z.enum(["Add Task",
+    "Favorite",
+    "Work",
+    "Personal",
+    "Learning"]);
+
+const Status_Dropdown = z.enum(["Pending", "InProgress", "Completed"])
 
 
 let sechma = z.object({
-    Title: z.string().min(3, "Make sure title characters are greater then 3").max(10, "The title can't be greater then 10"),
+    Title: z.string().min(3, "Make sure title characters are greater then 3").max(50, "The title can't be greater then 50"),
     Date: z.string().min(1, "Date is required"),
-    Time: z.string().min(1, "Time is required")
+    Time: z.string().min(1, "Time is required"),
+    Category: z.string().min(1, "Category is required"),
+    Category: Category_Dropdwon,
+    Status: z.string().min(1, "Status is required"),
+    Status: Status_Dropdown,
+    Progress: z.string().min(1, "Progress is required"),
+    Description : z.string().optional()
 
 })
 export default function Add_task() {
     const [show, setShow] = useState(false);
+    let GetTaskdata = useTaskdate((state)=>{
+        return state.update_taskdata
+
+    })
 
     function handleClose() {
         setShow(false);
@@ -41,10 +60,14 @@ export default function Add_task() {
         if (data_of_task) {
             let sent_data = {
                 Title: data_of_task.Title,
-                Date : data_of_task.Date,
-                Time : data_of_task.Time
+                Date: data_of_task.Date,
+                Time: data_of_task.Time,
+                Category: data_of_task.Category,
+                Status: data_of_task.Status,
+                Progress: data_of_task.Progress,
+                Description: data_of_task.Description
             }
-            console.log(sent_data)
+            GetTaskdata(sent_data)
             handleClose()
         }
     }
@@ -102,7 +125,6 @@ export default function Add_task() {
                                     <Form.Text className="text-danger">
                                         {errors.Time?.message}
                                     </Form.Text>
-                                
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -112,7 +134,7 @@ export default function Add_task() {
                             <Col md={6}>
                                 <Form.Group controlId="formTaskCategory">
                                     <Form.Label className="fw-semibold">Category</Form.Label>
-                                    <Form.Select defaultValue="">
+                                    <Form.Select defaultValue="" isInvalid={Boolean(errors.Category)} {...register("Category")}>
                                         <option value="" disabled>Select category</option>
                                         <option value="Add Task">Add task</option>
                                         <option value="Favorite">Favorite</option>
@@ -120,17 +142,23 @@ export default function Add_task() {
                                         <option value="Personal">Personal</option>
                                         <option value="Learning">Learning</option>
                                     </Form.Select>
+                                    <Form.Text className="text-danger">
+                                        {errors.Category?.message}
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
                                 <Form.Group controlId="formTaskStatus">
                                     <Form.Label className="fw-semibold">Status</Form.Label>
-                                    <Form.Select defaultValue="">
+                                    <Form.Select defaultValue="" isInvalid={errors.Category} {...register("Status")}>
                                         <option value="" disabled>Select status</option>
                                         <option value="Pending">Pending</option>
-                                        <option value="In Progress">In Progress</option>
+                                        <option value="InProgress">In Progress</option>
                                         <option value="Completed">Completed</option>
                                     </Form.Select>
+                                    <Form.Text className="text-danger">
+                                        {errors.Status?.message}
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -145,7 +173,12 @@ export default function Add_task() {
                                         min="0"
                                         max="100"
                                         placeholder="e.g. 50"
+                                        isInvalid={errors.Progress}
+                                        {...register("Progress")}
                                     />
+                                    <Form.Text className="text-danger">
+                                        {errors.Progress?.message}
+                                    </Form.Text>
                                 </Form.Group>
                             </Col>
                         </Row>
@@ -159,6 +192,7 @@ export default function Add_task() {
                                         as="textarea"
                                         rows={4}
                                         placeholder="Enter task details..."
+                                        {...register("Description")}
                                     />
                                 </Form.Group>
                             </Col>
